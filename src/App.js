@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import Row from './Row';
+import { tmdbDetails } from './Request';
+import Banner from './Banner';
+import { Navbar } from './Navbar';
 
 function App() {
+
+  const netflixOriginals = tmdbDetails.find(item => item.name === 'Netflix Originals');
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* nav */}
+      <Navbar />
+
+      {/* banner */}
+      <Banner
+        key={netflixOriginals.id}
+        bannerTitle={netflixOriginals.name}
+        bannerFetchURL={netflixOriginals.url}
+        netflixOriginals={netflixOriginals}
+      />
+
+      {/* rows */}
+      {tmdbDetails.map((detail) => (
+        <Row key={detail.id} title={detail.name} fetchURL={detail.url} />
+      ))}
+
     </div>
   );
 }
