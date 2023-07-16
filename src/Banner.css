@@ -58,7 +58,7 @@
 }
 
 
-@media (max-width: 520px) {
+@media screen and (max-width: 520px) {
     .banner {
         height: 180px;
         margin-bottom: 75%;

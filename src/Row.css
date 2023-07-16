@@ -30,7 +30,7 @@
     display: none;
 } */
 
-@media (max-width: 520px) {
+@media screen and (max-width: 520px) {
     .row_movies_posters {
         margin-bottom: 10px;
         z-index: 2;
