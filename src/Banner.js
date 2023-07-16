@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./Banner.css"
 
-const base_url = "https://image.tmdb.org/t/p/original";
-
 function Banner({ bannerTitle, bannerFetchURL }) {
     const [bannerMovies, setBannerMovies] = useState([]);
 
@@ -38,6 +36,7 @@ function Banner({ bannerTitle, bannerFetchURL }) {
                         backgroundPosition: "center center"
                     }}
                 >
+                    <div className='mobile_fade'></div>
                     <div className="banner_contents">
                         <h1 className="banner_title">
                             {bannerMovies[0]?.title || bannerMovies[0]?.name || bannerMovies[0]?.original_name}

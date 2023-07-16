@@ -26,13 +26,6 @@ export const Navbar = () => {
                         alt="Netflix Logo"
                     />
                 </div>
-                {/* <div className='nav_content'>
-                    <ul>
-                        <li><a href="#" >Home</a></li>
-                        <li><a href="#" >TV Shows</a></li>
-                        <li><a href="#" >Movies</a></li>
-                    </ul>
-                </div> */}
                 <div className="nav_avatar">
                     <img
                         src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"

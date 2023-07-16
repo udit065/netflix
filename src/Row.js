@@ -65,7 +65,7 @@ function Row({ title, fetchURL, }) {
                     })
                     }
                 </div>
-                <div style={{ padding: "40px" }}>
+                <div style={{ padding: "0.5rem" }}>
                     {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
                 </div>
             </div>
