@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './Row.css';
 import YouTube from 'react-youtube';
@@ -15,10 +15,9 @@ function Row({ title, fetchURL, }) {
 
         async function fetchData() {
             try {
+                // console.log("fetchURL");
                 const request = await axios.get(process.env.REACT_APP_BASE_URL + fetchURL).then((res) => {
                     setMovies(res.data.results);
-                    // console.log(moviesData,"axios")
-                    // retur
                 })
             }
             catch (error) {
@@ -40,7 +39,7 @@ function Row({ title, fetchURL, }) {
     }
     //Youtube Trailer js
     const handleClick = (movie) => {
-        // console.log(movie?.title)
+        // console.log(movie?.title
         if (trailerUrl) {
             setTrailerUrl('')
         } else {
@@ -52,19 +51,46 @@ function Row({ title, fetchURL, }) {
         }
     }
 
+
+    //LEFT-RIGHT-ARROW SCROLLER
+    const boxRef = useRef(null);
+
+    const btnpressprev = () => {
+        if (boxRef.current) {
+            let width = boxRef.current.clientWidth;
+            boxRef.current.scrollLeft = boxRef.current.scrollLeft - width;
+            // console.log(width);
+        }
+    }
+
+    const btnpressnext = () => {
+        if (boxRef.current) {
+            let width = boxRef.current.clientWidth;
+            boxRef.current.scrollLeft = boxRef.current.scrollLeft + width;
+            // console.log(width);
+        }
+    }
+
     return (
         <>
             <div className="row">
                 <h2>{title}</h2>
 
-                <div className="row_movies_posters">
+                <div ref={boxRef} className="row_movies_posters">
+
+                    <img src="./media/left-swipe.svg" className='left-arrow' onClick={btnpressprev} alt="left-arrow" />
+                    <div className='left-arrow-shadow'></div>
 
                     {movies.map(movie => {
 
                         return <img key={movie.id} src={`${base_url}${movie.poster_path}`} alt={movie.title} className="posters" onClick={() => handleClick(movie)} />
                     })
                     }
+                    <div className='right-arrow-shadow'></div>
+                    <img src="./media/right-swipe.svg" className='right-arrow' onClick={btnpressnext} alt="right-arrow" />
+
                 </div>
+
                 <div style={{ padding: "0.5rem" }}>
                     {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
                 </div>
