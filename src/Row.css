@@ -66,6 +66,15 @@
     z-index: 1;
 }
 
+/* .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #fff;
+    font-size: 24px;
+    padding: 5px;
+    cursor: pointer;
+} */
 
 @media screen and (max-width: 520px) {
     .row_movies_posters {

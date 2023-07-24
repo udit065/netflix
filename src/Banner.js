@@ -26,6 +26,7 @@ function Banner({ bannerTitle, bannerFetchURL }) {
         return str?.length > n ? str.substr(0, n - 1) + "..." : str;
     }
 
+    MoviePlayer
     return (
         <>
             {bannerMovies.length > 0 && (
@@ -43,7 +44,7 @@ function Banner({ bannerTitle, bannerFetchURL }) {
                         </h1>
 
                         <div className="banner_buttons">
-                            <button className="banner_button">Play</button>
+                            <button className="banner_button" onClick={MoviePlayer}>Play</button>
                             <button className="banner_button">My List</button>
                         </div>
                         <h1 className="banner_description">{truncate(bannerMovies[0]?.overview, 150)}</h1>

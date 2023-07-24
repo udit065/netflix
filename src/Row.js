@@ -34,22 +34,23 @@ function Row({ title, fetchURL, }) {
         height: "390",
         width: "99%",
         playerVars: {
-            autoplay: 0,
+            autoplay: 1,
         }
     }
     //Youtube Trailer js
     const handleClick = (movie) => {
-        // console.log(movie?.title
+        console.log(movie?.title)
         if (trailerUrl) {
             setTrailerUrl('')
         } else {
             movieTrailer(movie?.title || "")
-                .then(url => {
+                .then((url) => {
                     const urlParams = new URLSearchParams(new URL(url).search);
                     setTrailerUrl(urlParams.get('v'));
-                }).catch((error) => console.log(error));
+                }).catch((error) => console.log("temporary unavailabe"));
         }
     }
+
 
 
     //LEFT-RIGHT-ARROW SCROLLER
@@ -94,6 +95,7 @@ function Row({ title, fetchURL, }) {
                 <div style={{ padding: "0.5rem" }}>
                     {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
                 </div>
+
             </div>
         </>
     )
