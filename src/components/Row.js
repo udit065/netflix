@@ -3,12 +3,16 @@ import axios from 'axios';
 import './Row.css';
 import YouTube from 'react-youtube';
 import movieTrailer from 'movie-trailer';
+import { IoMdClose } from "react-icons/io";
+
 
 const base_url = "https://image.tmdb.org/t/p/original";
 
 function Row({ title, fetchURL, }) {
     const [movies, setMovies] = useState([]);
     const [trailerUrl, setTrailerUrl] = useState("");
+    const [isDivVisible, setDivVisible] = useState(false);//for yt close icon
+
 
     useEffect(() => {
         // console.log(process.env.REACT_APP_BASE_URL + fetchURL, "wertyuio");
@@ -32,25 +36,26 @@ function Row({ title, fetchURL, }) {
     //Youtube Trailer options
     const opts = {
         height: "390",
-        width: "99%",
+        width: "95%",
         playerVars: {
             autoplay: 1,
         }
     }
     //Youtube Trailer js
     const handleClick = (movie) => {
-        console.log(movie?.title)
-        if (trailerUrl) {
-            setTrailerUrl('')
-        } else {
-            movieTrailer(movie?.title || "")
-                .then((url) => {
-                    const urlParams = new URLSearchParams(new URL(url).search);
-                    setTrailerUrl(urlParams.get('v'));
-                }).catch((error) => console.log("temporary unavailabe"));
-        }
+        movieTrailer(movie?.title || movie?.name || "")
+            .then((url) => {
+                const urlParams = new URLSearchParams(new URL(url).search); //the URL object is used to parse the url (movie trailer URL) to extract the query parameters
+                setTrailerUrl(urlParams.get('v'));
+                setDivVisible(true);
+            }).catch((error) => console.log("temporary unavailabe"));
+        // }
     }
-
+    //yt close btn logic
+    const handleCloseClick = () => {
+        setTrailerUrl('');
+        setDivVisible(false);
+    };
 
 
     //LEFT-RIGHT-ARROW SCROLLER
@@ -92,8 +97,11 @@ function Row({ title, fetchURL, }) {
 
                 </div>
 
-                <div style={{ padding: "0.5rem" }}>
-                    {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
+                <div className='yt-main'>
+                    <div className='yt-player'>
+                        {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
+                    </div>
+                    {isDivVisible && <IoMdClose className='close-yt-trailer-btn' onClick={() => handleCloseClick()} />}
                 </div>
 
             </div>

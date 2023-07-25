@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "./Banner.css"
+import "./Banner.css";
+import YouTube from 'react-youtube';
+import movieTrailer from 'movie-trailer';
 
 function Banner({ bannerTitle, bannerFetchURL }) {
     const [bannerMovies, setBannerMovies] = useState([]);
+    const [trailerUrl, setTrailerUrl] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -26,7 +29,22 @@ function Banner({ bannerTitle, bannerFetchURL }) {
         return str?.length > n ? str.substr(0, n - 1) + "..." : str;
     }
 
-    MoviePlayer
+
+    // Banneer Youtube Trailer js
+    const moviePlayer = (movie) => {
+        console.log(movie?.title)
+        // if (trailerUrl) {
+        //     setTrailerUrl('')
+        // } else {
+        movieTrailer(movie?.title || "")
+            .then((url) => {
+                const urlParams = new URLSearchParams(new URL(url).search);
+                setTrailerUrl(urlParams.get('v'));
+            }).catch((error) => console.log("temporary unavailabe"));
+        // }
+    }
+
+
     return (
         <>
             {bannerMovies.length > 0 && (
@@ -44,7 +62,7 @@ function Banner({ bannerTitle, bannerFetchURL }) {
                         </h1>
 
                         <div className="banner_buttons">
-                            <button className="banner_button" onClick={MoviePlayer}>Play</button>
+                            <button className="banner_button" onClick={moviePlayer}>Play</button>
                             <button className="banner_button">My List</button>
                         </div>
                         <h1 className="banner_description">{truncate(bannerMovies[0]?.overview, 150)}</h1>
