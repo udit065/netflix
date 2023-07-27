@@ -14,21 +14,19 @@ function Banner({ bannerTitle, bannerFetchURL }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setTimeout(() => {
-            async function fetchData() {
-                try {
-                    const response = await axios.get(process.env.REACT_APP_BASE_URL + bannerFetchURL);
-                    const results = response.data.results;
-                    const randomIndex = Math.floor(Math.random() * results.length);
-                    const randomMovie = results[randomIndex];
-                    setBannerMovies([randomMovie]);
-                    setIsLoading(false);
-                } catch (error) {
-                    console.log(error, "Something went wrong with the API call");
-                }
+        async function fetchData() {
+            try {
+                const response = await axios.get(process.env.REACT_APP_BASE_URL + bannerFetchURL);
+                const results = response.data.results;
+                const randomIndex = Math.floor(Math.random() * results.length);
+                const randomMovie = results[randomIndex];
+                setBannerMovies([randomMovie]);
+                setIsLoading(false);
+            } catch (error) {
+                console.log(error, "Something went wrong with the API call");
             }
-            fetchData();
-        }, 4000)
+        }
+        fetchData();
     }, []);
 
     // console.log(bannerMovies);

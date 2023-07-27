@@ -19,22 +19,20 @@ function Row({ title, fetchURL, }) {
 
     useEffect(() => {
         // console.log(process.env.REACT_APP_BASE_URL + fetchURL, "wertyuio");
-        setTimeout(() => {
 
-            async function fetchData() {
-                try {
-                    // console.log("fetchURL");
-                    const request = await axios.get(process.env.REACT_APP_BASE_URL + fetchURL).then((res) => {
-                        setMovies(res.data.results);
-                        setLoading(true);
-                    })
-                }
-                catch (error) {
-                    console.log(error, "Something Went wrong with API Call");
-                }
+        async function fetchData() {
+            try {
+                // console.log("fetchURL");
+                const request = await axios.get(process.env.REACT_APP_BASE_URL + fetchURL).then((res) => {
+                    setMovies(res.data.results);
+                    setLoading(true);
+                })
             }
-            fetchData();
-        }, 4000)
+            catch (error) {
+                console.log(error, "Something Went wrong with API Call");
+            }
+        }
+        fetchData();
     }, [fetchURL]);
 
     // console.log(movies);
