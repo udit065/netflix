@@ -4,6 +4,8 @@ import './Row.css';
 import YouTube from 'react-youtube';
 import movieTrailer from 'movie-trailer';
 import { IoMdClose } from "react-icons/io";
+import Skeleton from '@mui/material/Skeleton';
+import SkeletonShadow from './LoadingShadow';
 
 
 const base_url = "https://image.tmdb.org/t/p/original";
@@ -12,23 +14,27 @@ function Row({ title, fetchURL, }) {
     const [movies, setMovies] = useState([]);
     const [trailerUrl, setTrailerUrl] = useState("");
     const [isDivVisible, setDivVisible] = useState(false);//for yt close icon
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
         // console.log(process.env.REACT_APP_BASE_URL + fetchURL, "wertyuio");
+        setTimeout(() => {
 
-        async function fetchData() {
-            try {
-                // console.log("fetchURL");
-                const request = await axios.get(process.env.REACT_APP_BASE_URL + fetchURL).then((res) => {
-                    setMovies(res.data.results);
-                })
+            async function fetchData() {
+                try {
+                    // console.log("fetchURL");
+                    const request = await axios.get(process.env.REACT_APP_BASE_URL + fetchURL).then((res) => {
+                        setMovies(res.data.results);
+                        setLoading(true);
+                    })
+                }
+                catch (error) {
+                    console.log(error, "Something Went wrong with API Call");
+                }
             }
-            catch (error) {
-                console.log(error, "Something Went wrong with API Call");
-            }
-        }
-        fetchData();
+            fetchData();
+        }, 4000)
     }, [fetchURL]);
 
     // console.log(movies);
@@ -49,7 +55,6 @@ function Row({ title, fetchURL, }) {
                 setTrailerUrl(urlParams.get('v'));
                 setDivVisible(true);
             }).catch((error) => console.log("temporary unavailabe"));
-        // }
     }
     //yt close btn logic
     const handleCloseClick = () => {
@@ -64,6 +69,7 @@ function Row({ title, fetchURL, }) {
     const btnpressprev = () => {
         if (boxRef.current) {
             let width = boxRef.current.clientWidth;
+            boxRef.current.classList.add("scroll-transition");
             boxRef.current.scrollLeft = boxRef.current.scrollLeft - width;
             // console.log(width);
         }
@@ -72,39 +78,49 @@ function Row({ title, fetchURL, }) {
     const btnpressnext = () => {
         if (boxRef.current) {
             let width = boxRef.current.clientWidth;
-            boxRef.current.scrollLeft = boxRef.current.scrollLeft + width;
+            boxRef.current.classList.add("scroll-transition");
+            boxRef.current.scrollLeft += width;
             // console.log(width);
         }
     }
 
     return (
         <>
-            <div className="row">
-                <h2>{title}</h2>
-
-                <div ref={boxRef} className="row_movies_posters">
-
-                    <img src="./media/left-swipe.svg" className='left-arrow' onClick={btnpressprev} alt="left-arrow" />
-                    <div className='left-arrow-shadow'></div>
-
-                    {movies.map(movie => {
-
-                        return <img key={movie.id} src={`${base_url}${movie.poster_path}`} alt={movie.title} className="posters" onClick={() => handleClick(movie)} />
-                    })
-                    }
-                    <div className='right-arrow-shadow'></div>
-                    <img src="./media/right-swipe.svg" className='right-arrow' onClick={btnpressnext} alt="right-arrow" />
-
+            {loading ? (
+                <div className="row">
+                    <h2>{title}</h2>
                 </div>
+            ) :
 
-                <div className='yt-main'>
-                    <div className='yt-player'>
-                        {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
-                    </div>
-                    {isDivVisible && <IoMdClose className='close-yt-trailer-btn' onClick={() => handleCloseClick()} />}
-                </div>
+                <Skeleton className="skeleton-text" variant='text' animation="wave" width={250} height={50} />
+            }
+            <div ref={boxRef} className="row_movies_posters">
+                {loading ? (
+                    <>
+                        <img src="./media/left-swipe.svg" className='left-arrow' onClick={btnpressprev} alt="left-arrow" />
+                        <div className='left-arrow-shadow'></div>
+
+                        {movies.map(movie => {
+
+                            return <img key={movie.id} src={`${base_url}${movie.poster_path}`} alt={movie.title} className="posters" onClick={() => handleClick(movie)} />
+                        })
+                        }
+                        <div className='right-arrow-shadow'></div>
+                        <img src="./media/right-swipe.svg" className='right-arrow' onClick={btnpressnext} alt="right-arrow" />
+                    </>
+                ) :
+                    <SkeletonShadow />
+                }
 
             </div>
+
+            <div className='yt-main'>
+                <div>
+                    {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} className='yt-player' />}
+                </div>
+                {isDivVisible && <IoMdClose className='close-yt-trailer-btn' onClick={() => handleCloseClick()} />}
+            </div>
+            {/* </div> */}
         </>
     )
 }

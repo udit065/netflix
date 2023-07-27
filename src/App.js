@@ -6,7 +6,7 @@ import { Navbar } from './components/Navbar';
 
 function App() {
 
-  const netflixOriginals = tmdbDetails.find(item => item.name === 'Netflix Originals');
+  const animatedMovies = tmdbDetails.find(item => item.name === 'Animation Movies');
 
 
   return (
@@ -16,10 +16,10 @@ function App() {
 
       {/* banner */}
       <Banner
-        key={netflixOriginals.id}
-        bannerTitle={netflixOriginals.name}
-        bannerFetchURL={netflixOriginals.url}
-        netflixOriginals={netflixOriginals}
+        key={animatedMovies.id}
+        bannerTitle={animatedMovies.name}
+        bannerFetchURL={animatedMovies.url}
+        animatedMovies={animatedMovies}
       />
 
       {/* rows */}
